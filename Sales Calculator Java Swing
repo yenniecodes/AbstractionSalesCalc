@@ -3,6 +3,46 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+abstract class Item {
+    protected String name;
+    protected double price;
+
+    public Item(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public abstract double calculateTotalSales();
+}
+
+class Phone extends Item {
+    private int quantity;
+
+    public Phone(String name, double price, int quantity) {
+        super(name, price);
+        this.quantity = quantity;
+    }
+
+    @Override
+    public double calculateTotalSales() {
+        return price * quantity;
+    }
+}
+
+class RepairService extends Item {
+    private int hours;
+
+    public RepairService(String name, double price, int hours) {
+        super(name, price);
+        this.hours = hours;
+    }
+
+    @Override
+    public double calculateTotalSales() {
+        return price * hours;
+    }
+}
+
 public class SalesCalculator extends JFrame {
     private JTextField phonePriceField, phoneQuantityField, repairPriceField, repairHoursField;
     private JLabel totalPhoneSalesLabel, totalRepairSalesLabel;
@@ -47,11 +87,11 @@ public class SalesCalculator extends JFrame {
                     double repairPrice = Double.parseDouble(repairPriceField.getText());
                     int repairHours = Integer.parseInt(repairHoursField.getText());
 
-                    double totalPhoneSales = phonePrice * phoneQuantity;
-                    double totalRepairSales = repairPrice * repairHours;
+                    Phone phone = new Phone("Phone", phonePrice, phoneQuantity);
+                    RepairService repairService = new RepairService("Repair", repairPrice, repairHours);
 
-                    totalPhoneSalesLabel.setText("Total Phone Sales: ₱" + totalPhoneSales);
-                    totalRepairSalesLabel.setText("Total Repair Sales: ₱" + totalRepairSales);
+                    totalPhoneSalesLabel.setText("Total Phone Sales: ₱" + phone.calculateTotalSales());
+                    totalRepairSalesLabel.setText("Total Repair Sales: ₱" + repairService.calculateTotalSales());
 
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(SalesCalculator.this, "Please enter valid numbers.");
