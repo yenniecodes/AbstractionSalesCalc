@@ -1,0 +1,71 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class SalesCalculator extends JFrame {
+    private JTextField phonePriceField, phoneQuantityField, repairPriceField, repairHoursField;
+    private JLabel totalPhoneSalesLabel, totalRepairSalesLabel;
+
+    public SalesCalculator() {
+        setTitle("Sales Calculator");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new GridLayout(6, 2));
+
+        add(new JLabel("Phone Price (₱):"));
+        phonePriceField = new JTextField("500.0");
+        add(phonePriceField);
+
+        add(new JLabel("Phone Quantity Sold:"));
+        phoneQuantityField = new JTextField("10");
+        add(phoneQuantityField);
+
+        add(new JLabel("Repair Price per Hour (₱):"));
+        repairPriceField = new JTextField("50.0");
+        add(repairPriceField);
+
+        add(new JLabel("Repair Hours:"));
+        repairHoursField = new JTextField("5");
+        add(repairHoursField);
+
+        JButton calculateButton = new JButton("Calculate Sales");
+        add(calculateButton);
+
+        totalPhoneSalesLabel = new JLabel("Total Phone Sales: ₱0.0");
+        add(totalPhoneSalesLabel);
+
+        totalRepairSalesLabel = new JLabel("Total Repair Sales: ₱0.0");
+        add(totalRepairSalesLabel);
+
+        calculateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    double phonePrice = Double.parseDouble(phonePriceField.getText());
+                    int phoneQuantity = Integer.parseInt(phoneQuantityField.getText());
+                    double repairPrice = Double.parseDouble(repairPriceField.getText());
+                    int repairHours = Integer.parseInt(repairHoursField.getText());
+
+                    double totalPhoneSales = phonePrice * phoneQuantity;
+                    double totalRepairSales = repairPrice * repairHours;
+
+                    totalPhoneSalesLabel.setText("Total Phone Sales: ₱" + totalPhoneSales);
+                    totalRepairSalesLabel.setText("Total Repair Sales: ₱" + totalRepairSales);
+
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(SalesCalculator.this, "Please enter valid numbers.");
+                }
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new SalesCalculator().setVisible(true);
+            }
+        });
+    }
+}
